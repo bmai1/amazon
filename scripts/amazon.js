@@ -1,3 +1,16 @@
+
+window.addEventListener('load', () => {
+  loadCart();
+  cart = localCart;
+  let tmp = 0; 
+  cart.forEach((item) => {
+    tmp += item.quantity;
+  })
+  document.querySelector('.js-cart-quantity').innerHTML = tmp;
+});
+
+
+
 let productsHTML = '';
 
 products.forEach((product) => {
@@ -61,7 +74,7 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 timeoutId = undefined;
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
-    clearTimeout(timeoutId);
+    // clearTimeout(timeoutId); why doesn't this work for unique products
     const productId = button.dataset.productId;
 
     let quantity = parseInt(document.querySelector(`.js-quantity-selector-${productId}`).value);
@@ -91,6 +104,8 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     cart.forEach((item) => {
       cartQuantity += item.quantity;
     });
+    // store cart in place of database
+    localStorage.setItem("cart", JSON.stringify(cart));
 
     // document.querySelector('.js-cart-quantity').innerHTML = cart.length; // for sorting by unique
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
