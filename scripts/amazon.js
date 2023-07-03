@@ -26,7 +26,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -42,7 +42,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -58,10 +58,22 @@ products.forEach((product) => {
 // put on webpage using dom
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
+timeoutId = undefined;
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
+    clearTimeout(timeoutId);
     const productId = button.dataset.productId;
-    
+
+    let quantity = parseInt(document.querySelector(`.js-quantity-selector-${productId}`).value);
+    let addPopup = document.querySelector(`.js-added-${productId}`);
+
+    addPopup.style.transition = "";
+    addPopup.style.opacity = 1;
+    timeoutId = setTimeout(() => {
+      addPopup.style.transition = "ease-out 1s";
+      addPopup.style.opacity = 0;
+    }, 2000);
+
     let matchingItem; 
     cart.forEach((item) => {
       if (productId === item.productId) {
@@ -69,12 +81,18 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
       }
     });
 
-    if (matchingItem) { matchingItem.quantity++; }
+    if (matchingItem) { matchingItem.quantity += quantity; }
     else cart.push({
       productId: productId, 
-      quantity: 1
+      quantity: quantity
     });
 
-    // console.log(cart);
+    let cartQuantity = 0;
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+    });
+
+    // document.querySelector('.js-cart-quantity').innerHTML = cart.length; // for sorting by unique
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
   });
 });
