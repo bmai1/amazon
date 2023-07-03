@@ -1,3 +1,8 @@
+
+if (localStorage.getItem("cart") == undefined) {
+    localStorage.setItem("cart", "[]");
+}
+
 let localCart = [];
 function loadCart() {
     localCart = JSON.parse(localStorage.getItem("cart"));
