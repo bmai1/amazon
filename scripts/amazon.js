@@ -18,10 +18,12 @@ products.forEach((product) => {
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
-              src="${product.image}">
+              src="${product.image}"
+              onclick="location.href='${product.path}';" style="cursor: pointer;"
+              >
           </div>
 
-          <div class="product-name limit-text-to-2-lines">
+          <div class="product-name limit-text-to-2-lines" onclick="location.href='${product.path}';" style="cursor: pointer;">
             ${product.name}
           </div>
 
